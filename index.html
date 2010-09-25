@@ -2,21 +2,17 @@
 	"http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
-		<script src="scripts/jquery.js"></script>
-		<script src="scripts/jquery-json.js"></script>
 		<script src="scripts/simple-common.js"></script>
 		<script>
 			// this function just appends a message to the page for demo
 			// purposes.
 			function append(message, data) {
-				$("body").append(
-					"<p>" +
-					message + " " +
-					"<pre>" + $.toJSON(data) + "</pre>" +
-					"</p>"
-				);
+				var text = document.createTextNode(message + " " + data + "\n");
+				var output = document.getElementById("output");
+				
+				output.appendChild(text);
 			}
-			$(function() {
+			function created(e) {
 				// demonstrate synchronous loading
 				var m = require("scripts/module.js");
 				
@@ -26,9 +22,11 @@
 				require("scripts/module.js", function(m) {
 					append("Loading module asynchronously. Result:", m);
 				});
-			});
+			}
 		</script>
 	</head>
 	
-	<body></body>
+	<body onload="created(event);">
+		<pre id="output"></pre>
+	</body>
 </html>

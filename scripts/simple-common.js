@@ -1,19 +1,36 @@
 function require(url, callback) {
 	var async = callback ? true : false;
 	var module = { exports: {}};
+	var request = new XMLHttpRequest();
 	
-	$.ajax({
-		url: url,
-		dataType: "text",
-		async: async,
-		complete: function(e) {
+	request.open('GET', url, async);
+	request.send(null);
+	
+	if(async) {
+		request.onreadystatechange = function(e) {
+			if(request.readyState == 4) {
+				if(request.status == 200) {
+					var script = "(function(module, exports) { " +
+						request.responseText + " })(module, module.exports)";
+
+					eval(script);
+
+					callback(module.exports);
+				} else {
+					throw("Error loading module from \"" + url + "\".");
+				}
+			}
+		}
+	} else {
+		if(request.status == 200) {
 			var script = "(function(module, exports) { " +
-				e.responseText + " })(module, module.exports)";
+				request.responseText + " })(module, module.exports)";
 			
 			eval(script);
 			
-			if(callback) { callback(module.exports); }
+			return module.exports;
+		} else {
+			throw("Error loading module from \"" + url + "\".");
 		}
-	});
-	if(!async) { return module.exports; }
+	}
 }
