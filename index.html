@@ -2,15 +2,30 @@
 	"http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
+		<style>
+			.result {
+				display: inline;
+			}
+		</style>
+		
 		<script src="scripts/simple-common.js"></script>
 		<script>
 			// this function just appends a message to the page for demo
 			// purposes.
 			function append(message, data) {
-				var text = document.createTextNode(message + " " + data + "\n");
-				var output = document.getElementById("output");
+				var node = document.createElement("p")
+				var message = document.createTextNode(message + " ");
+				var result = document.createElement("pre");
+				var resultText = document.createTextNode(data);
 				
-				output.appendChild(text);
+				result.setAttribute("class", "result");
+				
+				result.appendChild(resultText);
+				
+				node.appendChild(message);
+				node.appendChild(result);
+				
+				document.body.appendChild(node);
 			}
 			function created(e) {
 				// demonstrate synchronous loading
@@ -26,7 +41,5 @@
 		</script>
 	</head>
 	
-	<body onload="created(event);">
-		<pre id="output"></pre>
-	</body>
+	<body onload="created(event);"></body>
 </html>
