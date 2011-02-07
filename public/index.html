@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<script src="scripts/simple-commonjs.js"></script>
+		<script>
+			test({
+				testLoadSynchrously: function(t, name) {
+					var _ = require('scripts/underscore');
+					
+					_ ? t.succeed(name) : t.fail(name);
+				},
+				testLoadAsynchrously: function(t, name) {
+					require('scripts/underscore', function(_) {
+						_ ? t.succeed(name) : t.fail(name);
+					});
+				}
+			});
+		</script>
+	</head>
+	<body></body>
+</html>

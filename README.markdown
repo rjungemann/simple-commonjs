@@ -9,12 +9,18 @@ One other potential drawback is that it is more difficult to combine your JS fil
 
 Still, this library is very simple, and will allow you to develop your node.js libraries and your browser JS libraries in relatively the same way.
 
+This latest version has support for multiple load paths as well as automatic module caching.
+
+This library has no dependencies and should play nicely with JQuery and other libs. It should work in IE6+, Firefox, and WebKit-based browsers. The demonstration index.html file requires a browser with the "console.log" function and therefore won't work with versions of IE before version 9.
+
 Setup
 =====
 
-If you're running a Mac, drop this directory into your ~/Sites directory, then navigate to http://localhost/~username/simple-commonjs/index.html
+If you have an installation of Ruby with the Sinatra gem, you can run `rackup config.ru` in this directory and then access http://localhost:9292 in your browser.
 
-If you have an installation of Apache, drop it into a served directory (such as /var/www).
+If you're running a Mac, you can drop the public directory into your ~/Sites directory, then navigate to http://localhost/~username/simple-commonjs/index.html
+
+If you have an installation of Apache, you can drop the public directory into a served directory (such as /var/www).
 
 Example
 =======
