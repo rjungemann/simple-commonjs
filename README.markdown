@@ -22,6 +22,10 @@ If you're running a Mac, you can drop the public directory into your ~/Sites dir
 
 If you have an installation of Apache, you can drop the public directory into a served directory (such as /var/www).
 
+Note: Your web server must return a response code for files which aren't found that isn't interpreted as an error by a browser. In other words, don't return a 404 error for a script file which isn't found, otherwise your users might get an error message if a script isn't found at one path, but is found at another path. Instead, return a 204 response code, or another response code in the 200 series. This link has a list of error codes:
+
+	http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+
 Example
 =======
 

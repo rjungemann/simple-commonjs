@@ -71,66 +71,62 @@
     var request = new XMLHttpRequest();
     var errorString = "Error loading module from \"" + url + "\".";
     var jsUrl = url + '.js';
+    
+    request.open('GET', jsUrl, async);
+    request.send(null);
 
-    try {
-      request.open('GET', jsUrl, async);
-      request.send(null);
-
-      if(async) {
-        request.onreadystatechange = function(e) {
-          if(request.readyState == 4) {
-            if(request.status == 200) {
-              var script = "(function(module, exports) { " +
-                request.responseText + " })(module, module.exports)";
-
-              eval(script);
-
-              callback(module.exports);
-            } else {
-              if(error) { error(errorString); } else { throw(errorString); }
-            }
-          }
-        }
-      } else {
-        if(request.status == 200) {
-          var script = "(function(module, exports) { " +
+    if(async) {
+      request.onreadystatechange = function(e) {
+        if(request.readyState == 4) {
+          if(request.status == 200) {
+            var script = "(function(module, exports) { " +
               request.responseText + " })(module, module.exports)";
 
-          eval(script);
+            eval(script);
 
-          return module.exports;
-        } else {
-          if(error) { error(errorString); } else { throw(errorString); }
+            callback(module.exports);
+          } else {
+            if(error) { error(errorString); } else { throw(errorString); }
+          }
         }
       }
-    } catch(e) {
-      if(error) { error(errorString); } else { throw(errorString); }
+    } else {
+      if(request.status == 200) {
+        var script = "(function(module, exports) { " +
+            request.responseText + " })(module, module.exports)";
+
+        eval(script);
+
+        return module.exports;
+      } else {
+        if(error) { error(errorString); } else { throw(errorString); }
+      }
     }
   }
   function require(url, callback) {
-    var self = this;
+    var self = require;
 
-    this.paths = this.paths || ['.'];
-    this.cache = this.cache || {};
+    self.paths = self.paths || ['.'];
+    self.cache = self.cache || {};
 
-    if(this.cache[url]) {
+    if(self.cache[url]) {
       if(callback) {
-        callback(this.cache[url]);
+        callback(self.cache[url]);
       } else {
-        return this.cache[url];
+        return self.cache[url];
       }
     } else if(callback) {
       var callbacks = [];
 
-      for(var i = 0; i < this.paths.length; i++) {
+      for(var i = 0; i < self.paths.length; i++) {
         (function(index) {
-          var path = this.paths[i];
+          var path = self.paths[i];
           var fullPath = path === '' ? url : ([path, url]).join('/');
 
           callbacks.push(function(emitter) {
             var errorCallback;
 
-            if(index === this.paths.length - 1) {
+            if(index === self.paths.length - 1) {
               errorCallback = function(errorString) {
                 emitter.emit('next');
               }
@@ -146,13 +142,13 @@
         })(i);
       }
     } else {
-      for(var i = 0; i < this.paths.length; i++) {
-        var path = this.paths[i];
+      for(var i = 0; i < self.paths.length; i++) {
+        var path = self.paths[i];
         var fullPath = path === '' ? url : ([path, url]).join('/');
         var obj = simpleRequire(fullPath, null, function(errorString) {});
-
+        
         if(obj) {
-          this.cache[url] = obj;
+          self.cache[url] = obj;
 
           return obj;
         }
