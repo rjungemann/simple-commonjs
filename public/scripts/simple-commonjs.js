@@ -7,33 +7,33 @@
 */
 (function() {
   function EventEmitter() {
-  	var self = this;
-  	var ls = {};
+    var self = this;
+    var ls = {};
 
-  	this.emit = function(event) {
-  		var i, args = [];
+    this.emit = function(event) {
+      var i, args = [];
 
-  		for(i = 0; i < arguments.length; i++) { args.push(arguments[i]); }
-  		ls[event] = ls[event] || [];
+      for(i = 0; i < arguments.length; i++) { args.push(arguments[i]); }
+      ls[event] = ls[event] || [];
 
-  		for(i = 0; i < ls[event].length; i++) {
-  		  ls[event][i].apply(self, args);
-  		}
-  	}
-  	this.on = function(event, listener) {
-  		ls[event] = ls[event] || [];
-  		ls[event].push(listener);
-  	}
-  	this.removeListener = function(event, listener) {
-  		var l = [];
+      for(i = 0; i < ls[event].length; i++) {
+        ls[event][i].apply(self, args);
+      }
+    }
+    this.on = function(event, listener) {
+      ls[event] = ls[event] || [];
+      ls[event].push(listener);
+    }
+    this.removeListener = function(event, listener) {
+      var l = [];
 
-  		for(var i = 0; i < ls[event].length; i++) {
-  			if(ls[event][i] != listener) { l.push(ls[event][i]); }
-  		}
-  		ls[event] = l;
-  	}
-  	this.removeAllListeners = function(event) { ls[event] = []; }
-  	this.listeners = function(event) { return ls[event]; }
+      for(var i = 0; i < ls[event].length; i++) {
+        if(ls[event][i] != listener) { l.push(ls[event][i]); }
+      }
+      ls[event] = l;
+    }
+    this.removeAllListeners = function(event) { ls[event] = []; }
+    this.listeners = function(event) { return ls[event]; }
   }
   function sequence(callbacks) {
     i = 0;
