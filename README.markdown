@@ -29,10 +29,10 @@ Make a file such named "module.js". This will be your module to load in.
 
 The file should contain something like the following:
 
-  exports.add = function(a, b) { return a + b; }
+	exports.add = function(a, b) { return a + b; }
 
 Then to load in the module, just call the following from your page:
 
-  var module = require("module.js");
-  
-  console.log(module.add(5, 5)); // outputs 10
+	var module = require("module.js");
+	
+	console.log(module.add(5, 5)); // outputs 10
